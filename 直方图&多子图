@@ -1,0 +1,19 @@
+import numpy as np
+import pylab as pl
+# make an array of random numbers with a gaussian distribution with
+# mean = 5.0
+# rms = 3.0
+# number of points = 1000
+f1 = pl.figure(1)
+pl.subplot(221)
+data = np.random.normal(5.0, 3.0, 1000)
+# make a histogram of the data array
+#自定义直方图bin宽度
+bins = np.arange(-5.,16.,1.)
+pl.hist(data,bins,histtype='stepfilled')#最后一个参数去掉了黑色轮廓
+# make plot labels
+pl.xlabel('data')
+#创建右边的子图和下边的子图
+pl.subplot(222)
+pl.subplot(212)
+pl.show()
