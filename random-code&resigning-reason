@@ -1,0 +1,160 @@
+import win32com.client
+import re
+import random
+
+conn = win32com.client.Dispatch(r'ADODB.Connection')
+DSN = 'EMPLOYEE'
+conn.Open(DSN)
+
+rs = win32com.client.Dispatch(r'ADODB.Recordset')
+rs_name = 'ZZBI_CHR_EMPLOYEE'
+rs.Open('['+rs_name+']',conn,1,3)
+rs.MoveFirst()
+count = 0
+
+while 1:
+    if count>100:
+        break
+    else:
+        count = count+1
+        
+        #学历整理
+        if rs.Fields.Item(7).Value=='中專及以下(2012年12月17日起不再使用)':
+            n = random.uniform(10,20)
+            if n <=16:
+                rs.Fields.Item(6).Value='1'
+            elif n>16:
+                rs.Fields.Item(6).Value='2'
+                
+        #离职原因整理
+        if rs.Fields.Item(8).Value=='離職':
+            if rs.Fields.Item(26).Value=='自我提升機會':
+                rs.Fields.Item(30).Value='自我提升機會'
+                rs.Fields.Item(31).Value=1
+            elif rs.Fields.Item(26).Value=='公司文化':
+                rs.Fields.Item(30).Value='公司文化'
+                rs.Fields.Item(31).Value=2
+            elif rs.Fields.Item(26).Value=='終止實習':
+                rs.Fields.Item(30).Value='終止實習'
+                rs.Fields.Item(31).Value=3
+            elif rs.Fields.Item(26).Value=='新進未報到':
+                rs.Fields.Item(30).Value='新進未報到'
+                rs.Fields.Item(31).Value=4
+            elif rs.Fields.Item(26).Value=='生活環境':
+                rs.Fields.Item(30).Value='生活環境'
+                rs.Fields.Item(31).Value=5
+            elif rs.Fields.Item(26).Value=='試用期不合格':
+                rs.Fields.Item(30).Value='試用期不合格'
+                rs.Fields.Item(31).Value=6
+            elif rs.Fields.Item(26).Value=='個人原因':
+                if '收入' in rs.Fields.Item(29).Value:
+                    rs.Fields.Item(30).Value='薪資收入'
+                    rs.Fields.Item(31).Value=10
+                else:
+                    rs.Fields.Item(30).Value='個人原因'
+                    rs.Fields.Item(31).Value=7
+            elif rs.Fields.Item(26).Value=='死亡':
+                rs.Fields.Item(30).Value='死亡'
+                rs.Fields.Item(31).Value=8
+            elif rs.Fields.Item(26).Value=='特殊解約':
+                rs.Fields.Item(30).Value='特殊解約'
+                rs.Fields.Item(31).Value=9
+            elif rs.Fields.Item(26).Value=='薪資收入':
+                rs.Fields.Item(30).Value='薪資收入'
+                rs.Fields.Item(31).Value=10
+            elif rs.Fields.Item(26).Value=='協商解約':
+                rs.Fields.Item(30).Value='協商解約'
+                rs.Fields.Item(31).Value=11
+            elif rs.Fields.Item(26).Value=='企業經營情況影響':
+                rs.Fields.Item(30).Value='企業經營情況影響'
+                rs.Fields.Item(31).Value=12
+            elif rs.Fields.Item(26).Value=='工作因素':
+                rs.Fields.Item(30).Value='工作因素'
+                rs.Fields.Item(31).Value=13
+            elif rs.Fields.Item(26).Value=='開除':
+                rs.Fields.Item(30).Value='開除'
+                rs.Fields.Item(31).Value=14
+            else:
+                if str(rs.Fields.Item(29).Value)!='None':
+                    if '環境不適應' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='生活環境'
+                        rs.Fields.Item(31).Value=5
+                    elif '吃' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='生活環境'
+                        rs.Fields.Item(31).Value=5
+                    elif '住' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='生活環境'
+                        rs.Fields.Item(31).Value=5
+                    elif '生活' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='生活環境'
+                        rs.Fields.Item(31).Value=5
+                    elif '水土不服' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='生活環境'
+                        rs.Fields.Item(31).Value=5
+                    elif '交通' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='生活環境'
+                        rs.Fields.Item(31).Value=5
+                    elif "家" in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '個人' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '結婚' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '懷孕' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '身體' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '病' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '私事' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '另有他就' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '另' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='个人原因'
+                        rs.Fields.Item(31).Value=7
+                    elif '校' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='終止實習'
+                        rs.Fields.Item(31).Value=3
+                    elif '實習' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='終止實習'
+                        rs.Fields.Item(31).Value=3
+                    elif '不適應公司環境' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='公司文化'
+                        rs.Fields.Item(31).Value=2
+                    elif '主管' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='公司文化'
+                        rs.Fields.Item(31).Value=2
+                    elif '管理' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='公司文化'
+                        rs.Fields.Item(31).Value=2
+                    elif '加班' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='工作因素'
+                        rs.Fields.Item(31).Value=13
+                    elif '發展' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='自我提升機會'
+                        rs.Fields.Item(31).Value=1
+                    elif '升遷' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='自我提升機會'
+                        rs.Fields.Item(31).Value=1
+                    elif '工資' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='薪資收入'
+                        rs.Fields.Item(31).Value=10
+                    elif '曠工' in rs.Fields.Item(29).Value:
+                        rs.Fields.Item(30).Value='自動離職'
+                        rs.Fields.Item(31).Value=15
+        
+        rs.MoveNext()
+        
+print(count)
+print("flag")
+
+conn.Close()
