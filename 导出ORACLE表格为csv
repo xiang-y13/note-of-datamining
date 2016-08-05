@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+import sys
+import csv
+import cx_Oracle
+import os
+from langconv import *
+
+os.environ['NLS_LANG']='SIMPLIFIED CHINESE_CHINA.UTF8'
+orcl = cx_Oracle.connect('参数')
+curs = orcl.cursor()
+
+printHeader = True
+tableName = '表名'
+csv_file_dest = tableName + ".csv"
+outputFile = open(csv_file_dest,'w',encoding = 'utf-8')
+output = csv.writer(outputFile, dialect='excel')
+sql = "select * from " + tableName
+curs2 = orcl.cursor()
+curs2.execute(sql)
+
+if printHeader:
+    cols = []
+    for col in curs2.description:
+        cols.append(col[0])
+    output.writerow(cols)
+
+for row_data in curs2: 
+    output.writerow(row_data)
+
+outputFile.close()
