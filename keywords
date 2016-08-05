@@ -1,0 +1,34 @@
+import win32com.client
+import re
+from langconv import *
+
+def cht_to_chs(line):
+    line = Converter('zh-hans').convert(line)
+    line.encode('utf-8')
+    return line
+
+conn = win32com.client.Dispatch(r'ADODB.Connection')
+DSN = 'EMPLOYEE'
+conn.Open(DSN)
+
+rs = win32com.client.Dispatch(r'ADODB.Recordset')
+rs_name = 'ZZBI_CHR_EMPLOYEE'
+rs.Open('['+rs_name+']',conn,1,3)
+rs.MoveFirst()
+
+f = open('d:\\xiangying\\python\\remark.txt','w')
+
+while 1:
+    if rs.EOF:
+        break
+    else:
+        reason = str(rs.Fields.Item(29).Value)
+        reason = cht_to_chs(reason)
+        if reason!='None':
+            f.write(reason)
+            f.write('\t')
+        rs.MoveNext()
+
+print('finished')
+f.close()
+conn.Close()
