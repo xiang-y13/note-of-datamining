@@ -1,0 +1,10 @@
+import xlwt
+
+book = xlwt.Workbook()
+sheet = book.add_sheet('dede',cell_overwrite_ok = True)
+
+sheet.write(0,0,'fuck')
+str = '哈哈哈'
+sheet.write(1,1,str)
+
+book.save("D:\\xiangying\\test.xls")
