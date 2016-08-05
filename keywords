@@ -3,7 +3,7 @@ import win32com.client
 import re
 from langconv import *
 from snownlp import SnowNLP
-
+#繁体转简体
 def cht_to_chs(line):
     line = Converter('zh-hans').convert(line)
     line.encode('utf-8')
@@ -34,7 +34,7 @@ while 1:
 print('finished')
 f.close()
 conn.Close()
-
+#提取文档的关键词，txt文档应为ANSI编码
 f1 = open('remark.txt','r')
 t = f1.read()
 s = SnowNLP(t)
