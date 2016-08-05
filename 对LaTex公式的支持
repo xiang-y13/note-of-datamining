@@ -1,0 +1,19 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.arange(1,1000,1)#开始值、终值、步长
+r = -2
+c = 5
+y = [5*(a**r) for a in x]
+
+ 
+
+fig = plt.figure()
+
+ax = fig.add_subplot(111)
+#label以公式显示
+ax.loglog(x,y,label = r"$y = \frac{1}{2\sigma_1^2}, c=5,\sigma_1=-2$")
+ax.legend()
+ax.set_xlabel(r"x")
+ax.set_ylabel(r"y")
+plt.show()
